@@ -2,7 +2,7 @@
 
 ## About
 
-This repository contains an analytical method designed to identify and prioritize compounds that can reverse the effects of Cardiac Fibroblast (CF) cells, restoring them to a healthy state.
+This repository contains an analytical method designed to identify and prioritize compounds that can reverse the effects of Cardiac Fibrosis (CF), restoring them to a healthy cellular state.
 
 Our approach focuses on distinguishing morphological features associated with disease from those that remain unaffected at the single-cell level.
 By comparing these features to healthy controls, we identify which morphological characteristics are significantly altered in the disease state (on-morphological signatures) and which are not (off-morphological signatures).
@@ -13,9 +13,9 @@ Ideally, the method selects compounds that produce low scores in both "on" and "
 
 ## Approach
 
-### Obtaining CF HCS single-cell image-based profiles
+### Obtaining CF high-content screening (HCS) single-cell image-based profiles
 
-Image-based profiles were generated from high-content screening using the [Cell Painting](https://www.nature.com/articles/nprot.2016.105) assay.
+Image-based profiles were generated from HCS using the [Cell Painting](https://www.nature.com/articles/nprot.2016.105) assay.
 The screen encompasses 550 different compounds.
 It includes three control types: non-failing heart cells (positive control), failing heart cells with fibrosis (negative control), and a transforming growth factor receptor inhibitor (TGFRi) representing a compound that deactivates the failing state.
 These profiles were obtained using a data analysis [repository](https://github.com/WayScience/targeted_fibrosis_drug_screen), which includes the necessary instructions for downloading the dataset.
