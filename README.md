@@ -8,7 +8,7 @@ Our approach focuses on distinguishing morphological features associated with di
 By comparing these features to healthy controls, we identify which morphological characteristics are significantly altered in the disease state (on-morphological signatures) and which are not (off-morphological signatures).
 The "on" signatures highlight disease-related changes, while the "off" signatures serve as indicators of potential off-target effects when cells are exposed to various compounds.
 
-By quantifying the distances between these "on" and "off" morphological signatures, our method prioritizes compounds based on their ability to minimize both on-target and off-target effects. 
+By quantifying the distances between these "on" and "off" morphological signatures, our method prioritizes compounds based on their ability to minimize both on-target and off-target effects.
 Ideally, the method selects compounds that produce low scores in both "on" and "off" signatures, indicating a close resemblance to the healthy control state with minimal off-target effects.
 
 ## Approach
@@ -23,7 +23,9 @@ These profiles were obtained using a data analysis [repository](https://github.c
 ### Determining on/off morphological signatures
 
 ![img](./figures/on-off_morphology_signatures.png)
-> **Using KL-divergence to measure morphological effect.** After clustering the single-cell populations, we apply KL divergence to measure the magnitude of both the on and off-morphological signatures. Using the on/off morphological signatures, we conducted a weighted Kolmogorov-Smirnov (WKS) test.
+>Using  weighted Kolmogorov-Smirnov to identify on/off morphological signatures.
+
+Using the on/off morphological signatures, we conducted a weighted Kolmogorov-Smirnov (WKS) test.
 This test helps determine which morphological features are significantly different by providing both a p-value and a measure of how distinct the cumulative distribution functions (CDFs) are for each feature.
 Morphological features with a p-value lower than 0.05 are categorized in the "on-morphology signature" group, indicating they are significantly different compared to the control.
 Features with a p-value greater than 0.05 are placed in the "off-morphology signature" group, signifying they were not affected in the disease state.
@@ -43,7 +45,7 @@ Each identified cluster will represent a distinct "morphological drug response" 
 ![img](./figures/KL-div.png)
 >**Using KL-Divergence to Measure Morphological Effects.** After clustering the single-cell populations, we apply KL divergence to quantify the magnitude of both the on and off morphological signatures.
 
-We uzse calculate the Kullback-Leibler (KL) divergence to measure the differences between the probability distributions of all pairs of perturbation/healthy control clusters for each on/off morphology signature feature set independently.
+We  calculate the Kullback-Leibler (KL) divergence to measure the differences between the probability distributions of all pairs of perturbation/healthy control clusters for each on/off morphology signature feature set independently.
 By summing the maximum KL divergence distances for the on/off-morphology signatures, we can quantify how distinct each perturbation cluster is from the healthy controls.
 We aim to identify hits by focusing on perturbations with low KL scores in both "off-morphology" and "on-morphology" signatures. A low "off-morphology signature" score indicates minimal off-target effects in the morphology space.
 Conversely, a low "on-morphology signature" score suggests that the morphological features of treated cells closely resemble those of the control state.
