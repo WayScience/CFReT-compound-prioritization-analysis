@@ -20,18 +20,6 @@ The screen encompasses 550 different compounds.
 It includes three control types: non-failing heart cells (positive control), failing heart cells with fibrosis (negative control), and a transforming growth factor receptor inhibitor (TGFRi) representing a compound that deactivates the failing state.
 These profiles were obtained using a data analysis [repository](https://github.com/WayScience/targeted_fibrosis_drug_screen), which includes the necessary instructions for downloading the dataset and reproducing the image analysis and image-based profiling pipelines.
 
-### Processing image-based profiles obtained from HCS to generated single-cell feature-selected profiles
-
-![img!](./figures/Image-based%20profiles.png)
-> **Processing pipeline for image-based profiles.** An overview of the process used to obtain single-cell feature-selected profiles from single-cell image-based data using Pycytominer.
-
-We will process these profiles using [Pycytominer](https://github.com/cytomining/pycytominer).
-The first step is to annotate each single cell with the metadata associated with each plate.
-Next, we apply a standard scaler to normalize each feature to zero mean and unit variance.
-Following normalization, we perform feature selection by dropping morphological feature columns that have more than 5% missing values and extreme values.
-We will also apply variance and correlation thresholds to remove features with low variance, which do not contribute significant information, and to eliminate highly correlated features.
-Through this pipeline, this results in single-cell feature-selected profiles
-
 ### Determining on/off morphological signatures
 
 ![img](./figures/on-off_morphology_signatures.png)
