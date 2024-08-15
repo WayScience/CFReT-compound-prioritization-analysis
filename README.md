@@ -34,7 +34,8 @@ Through this pipeline, this results in single-cell feature-selected profiles
 
 ### Determining on/off morphological signatures
 
-![img](./figures/on-off_morphology_signatures.png)**Using KL-divergence to measure morphological effect.** After clustering the single-cell populations, we apply KL divergence to measure the magnitiude of both the on and off morpholoigcal signatures.  on/off morphological signatures, we conducted a weighted Kolmogorov-Smirnov (WKS) test.
+![img](./figures/on-off_morphology_signatures.png)
+> **Using KL-divergence to measure morphological effect.** After clustering the single-cell populations, we apply KL divergence to measure the magnitude of both the on and off-morphological signatures. Using the on/off morphological signatures, we conducted a weighted Kolmogorov-Smirnov (WKS) test.
 This test helps determine which morphological features are significantly different by providing both a p-value and a measure of how distinct the cumulative distribution functions (CDFs) are for each feature.
 Morphological features with a p-value lower than 0.05 are categorized in the "on-morphology signature" group, indicating they are significantly different compared to the control.
 Features with a p-value greater than 0.05 are placed in the "off-morphology signature" group, signifying they were not affected in the disease state.
