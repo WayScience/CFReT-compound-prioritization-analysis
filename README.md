@@ -18,7 +18,7 @@ Ideally, the method selects compounds that produce low scores in both "on" and "
 Image-based profiles were generated from HCS using the [Cell Painting](https://www.nature.com/articles/nprot.2016.105) assay.
 The screen encompasses 550 different compounds.
 It includes three control types: non-failing heart cells (positive control), failing heart cells with fibrosis (negative control), and a transforming growth factor receptor inhibitor (TGFRi) representing a compound that deactivates the failing state.
-These profiles were obtained using a data analysis [repository](https://github.com/WayScience/targeted_fibrosis_drug_screen), which includes the necessary instructions for downloading the dataset.
+These profiles were obtained using a data analysis [repository](https://github.com/WayScience/targeted_fibrosis_drug_screen), which includes the necessary instructions for downloading the dataset and reproducing the image analysis and image-based profiling pipelines.
 
 ### Processing image-based profiles obtained from HCS to generated single-cell feature-selected profiles
 
