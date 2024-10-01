@@ -71,11 +71,3 @@ def split_meta_and_features(
         meta_cols = infer_cp_features(profile, metadata=metadata_tag)
 
     return (meta_cols, features_cols)
-
-
-def split_morphology_features() -> tuple[list[str], list[str]]:
-    pass
-
-
-def get_feature_names(df) -> list[str]:
-    pass
