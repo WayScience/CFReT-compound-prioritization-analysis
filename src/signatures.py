@@ -79,9 +79,7 @@ def weighted_ks_test(
     """
 
     # storing weighted ks stats and p values
-    scores = defaultdict(lambda: None).fromkeys(
-        ["feature_name", "ks_stat", "p_val", "below_thresh"]
-    )
+    scores = defaultdict(lambda: None)
 
     for morphology_feature in target.columns.tolist():
         # step1: calculating weights for the target and reference samples ensures that each sample
