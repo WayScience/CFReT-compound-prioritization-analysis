@@ -20,7 +20,6 @@ The primary function, `get_morphology_signatures()`, returns a tuple of two list
 "on" and "off" morphological signatures, respectively.
 """
 
-from collections import defaultdict
 from typing import Optional
 
 import numpy as np
@@ -31,7 +30,7 @@ from scipy import stats
 def weighted_ks_test(
     target: pd.DataFrame,
     reference: pd.DataFrame,
-    p_tresh: Optional[float] = 0.05,
+    p_thresh: Optional[float] = 0.05,
 ) -> dict:
     """Performs a weighted Kolmogorov-Smirnov (KS) test between the target and reference
     datasets for each morphological feature. This method is designed to handle
@@ -79,11 +78,10 @@ def weighted_ks_test(
     """
 
     # storing weighted ks stats and p values
-    scores = defaultdict(lambda: None)
+    scores_list = []
 
     for morphology_feature in target.columns.tolist():
-        # step1: calculating weights for the target and reference samples ensures that each sample
-        # contributes equally to the analysis, regardless of its size.
+        # Step 1: Calculate weights for target and reference samples, adjusting for sample sizes
         target_weights = np.ones_like(target[morphology_feature]) / len(
             target[morphology_feature]
         )
@@ -91,53 +89,60 @@ def weighted_ks_test(
             reference[morphology_feature]
         )
 
-        # Step 2: sort the values and weights
+        # Step 2: Sort the values and weights
         sorted_reference_indices = np.argsort(reference[morphology_feature].to_numpy())
         sorted_target_indices = np.argsort(target[morphology_feature].to_numpy())
 
-        sorted_reference_data = reference.iloc[sorted_reference_indices]
-        sorted_target_data = target.iloc[sorted_target_indices]
+        sorted_reference_data = reference[morphology_feature].to_numpy()[
+            sorted_reference_indices
+        ]
+        sorted_target_data = target[morphology_feature].to_numpy()[
+            sorted_target_indices
+        ]
 
         sorted_reference_weights = reference_weights[sorted_reference_indices]
         sorted_target_weights = target_weights[sorted_target_indices]
 
-        # step 3: calculate weighted cumulative distribution functions (CDF)
+        # Step 3: Calculate weighted cumulative distribution functions (CDFs)
         weighted_reference_cdf = np.cumsum(sorted_reference_weights) / np.sum(
-            sorted_reference_indices
+            sorted_reference_weights
         )
         weighted_target_cdf = np.cumsum(sorted_target_weights) / np.sum(
-            sorted_target_indices
+            sorted_target_weights
         )
 
-        # finding all the unique values
+        # Step 4: Find all unique values
         all_values = np.unique(
             np.concatenate([sorted_reference_data, sorted_target_data])
         )
 
-        # interpolate to get CDF values at these unique points
+        # Step 5: Interpolate to get CDF values at these unique points
         target_cdf_at_values = np.interp(
-            all_values, sorted_reference_data, weighted_reference_cdf, left=0, right=1
-        )
-        reference_cdf_at_values = np.interp(
             all_values, sorted_target_data, weighted_target_cdf, left=0, right=1
         )
+        reference_cdf_at_values = np.interp(
+            all_values, sorted_reference_data, weighted_reference_cdf, left=0, right=1
+        )
 
-        # calculating the maximum difference between the two weighted CDF's (KS stat)
+        # Step 6: Calculate the maximum difference between the two weighted CDFs (KS statistic)
         ks_stat = np.max(np.abs(target_cdf_at_values - reference_cdf_at_values))
 
-        # using welch's t-test assuming no equal variances between groups, good for comparing
-        # the means of unbalanced samples
-        t_stat, p_val = stats.ttest_ind(
+        # Step 7: Perform a t-test
+        _, p_val = stats.ttest_ind(
             reference_cdf_at_values, target_cdf_at_values, equal_var=False
         )
 
-        # storing scores
-        scores["feature_name"] = morphology_feature
-        scores["ks_stat"] = ks_stat
-        scores["p_val"] = p_val
-        scores["below_thresh"] = p_val < p_tresh
+        # Step 7: Store the scores
+        scores_list.append(
+            {
+                "feature_name": morphology_feature,
+                "ks_stat": ks_stat,
+                "p_val": p_val,
+                "below_thresh": p_val < p_thresh,
+            }
+        )
 
-    return scores
+    return scores_list
 
 
 def get_morphology_signatures(
