@@ -49,3 +49,49 @@ We  calculate the Kullback-Leibler (KL) divergence to measure the differences be
 By summing the maximum KL divergence distances for the on/off-morphology signatures, we can quantify how distinct each perturbation cluster is from the healthy controls.
 We aim to identify hits by focusing on perturbations with low KL scores in both "off-morphology" and "on-morphology" signatures. A low "off-morphology signature" score indicates minimal off-target effects in the morphology space.
 Conversely, a low "on-morphology signature" score suggests that the morphological features of treated cells closely resemble those of the control state.
+
+## how to install
+
+Here’s a polished **“Installation”** section for your README that walks through cloning a GitHub repo, creating an environment with Conda, and installing dependencies using Poetry:
+
+---
+
+## 🛠️ Installation
+
+Follow these steps to get started with the project:
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/WayScience/compound-prioritization-analysis.git
+cd compound-prioritization-analysis
+```
+
+### 2. Create and Activate a Conda Environment
+
+It's recommended to use Conda to manage dependencies and isolate your environment:
+
+```bash
+conda create -n sc-hit python=3.12
+conda activate sc-hit
+```
+
+Replace `your-env-name` with the name you’d like for the environment.
+
+### 3. Install Poetry (if not already installed)
+
+You can install Poetry via the official installer:
+
+```bash
+conda install poetry
+```
+
+### 4. Install Dependencies with Poetry
+
+Once you're in your Conda environment and inside the project folder, install all dependencies:
+
+```bash
+poetry install
+```
+
+This will install all required packages specified in the `pyproject.toml` and `poetry.lock` files.
