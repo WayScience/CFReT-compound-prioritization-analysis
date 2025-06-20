@@ -6,7 +6,6 @@ as well as for saving, loading, and writing files.
 """
 
 import pathlib
-from typing import Optional
 
 import pandas as pd
 from pycytominer.cyto_utils import infer_cp_features
@@ -31,7 +30,7 @@ def create_results_dir() -> pathlib.Path:
 def split_meta_and_features(
     profile: pd.DataFrame,
     compartments=["Nuclei", "Cells", "Cytoplasm"],
-    metadata_tag: Optional[bool] = False,
+    metadata_tag: bool | None = False,
 ) -> tuple[list[str], list[str]]:
     """Splits metadata and feature column names
 
