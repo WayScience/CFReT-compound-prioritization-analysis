@@ -1,47 +1,58 @@
+# Pre-commit configuration file
+# Documentation: https://pre-commit.com/
+
 repos:
-  # remove unused imports
-  - repo: https://github.com/hadialqattan/pycln.git
-    rev: v2.4.0
+  # Keep pre-commit itself up to date
+-   repo: https://gitlab.com/vojko.pribudic.foss/pre-commit-update
+    rev: v0.7.0
     hooks:
-      - id: pycln
+    -   id: pre-commit-update
+        args: ["--verbose"]
 
-  # import formatter with black configurations
-  - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+  # Ruff for linting Python files
+-   repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.12.0
     hooks:
-      - id: isort
-        name: isort (python)
-        args: ["--profile", "black", "--filter-files"]
-        language_version: python3.10
+    -   id: ruff-check
+        args: ["--fix"]
 
-  # Ruff python linter and formatter
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.8
+    # nbQA to run Ruff on Jupyter Notebooks
+-   repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.9.1
     hooks:
-      - id: ruff
-        types_or: [python, pyi, jupyter]
-        args: [--fix, --config, pyproject.toml]
-      - id: ruff-format
-        types_or: [python, pyi, jupyter]
+    -   id: nbqa-ruff
+        name: nbQA-Ruff
+        args: ["--fix"]
+        additional_dependencies: ["ruff"]
 
-  # Formats python code in documentation blocks
-  - repo: https://github.com/adamchainz/blacken-docs
-    rev: "1.18.0"
+    # Format and sort TOML files
+-   repo: https://github.com/pappasam/toml-sort
+    rev: v0.24.2
     hooks:
-      - id: blacken-docs
-        additional_dependencies:
-          - black==24.8.0
-  # additional hooks found with in the pre-commit lib
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    -   id: toml-sort
+        args: ["--in-place"]
+
+    # Sort imports in Python files (if separate from Ruff)
+-   repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.10.1
     hooks:
-      - id: trailing-whitespace # removes trailing white spaces
-      - id: mixed-line-ending # removes mixed end of line
-        args:
-          - --fix=lf
-      - id: pretty-format-json # JSON Formatter
-        args:
-          - --autofix
-          - --indent=4
-          - --no-sort-keys
-      - id: end-of-file-fixer # adds new line to files if not present
+    -   id: isort
+        args: ["--profile", "black"]
+
+    # Pyupgrade for updating Python syntax to newer versions
+-   repo: https://github.com/asottile/pyupgrade
+    rev: v3.20.0
+    hooks:
+    -   id: pyupgrade
+        args: ["--py311-plus"]
+
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+    -   id: check-yaml # Validate YAML files
+    -   id: check-json # Validate JSON files
+    -   id: end-of-file-fixer # Ensure files end with a newline
+    -   id: trailing-whitespace # Remove trailing whitespace
+    -   id: check-merge-conflict # Prevent committing merge conflict markers
+    -   id: check-added-large-files # Warn about large files being added
+        args: ["--maxkb=102400"]
