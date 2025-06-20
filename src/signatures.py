@@ -20,7 +20,6 @@ The primary function, `get_morphology_signatures()`, returns a tuple of two list
 "on" and "off" morphological signatures, respectively.
 """
 
-from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -30,7 +29,7 @@ from scipy import stats
 def weighted_ks_test(
     target: pd.DataFrame,
     reference: pd.DataFrame,
-    p_thresh: Optional[float] = 0.05,
+    p_thresh: float | None = 0.05,
 ) -> dict:
     """Performs a weighted Kolmogorov-Smirnov (KS) test between the target and reference
     datasets for each morphological feature. This method is designed to handle
@@ -148,8 +147,8 @@ def weighted_ks_test(
 def get_morphology_signatures(
     target: pd.DataFrame,
     reference: pd.DataFrame,
-    method: Optional[str] = "weighted_ks",
-    p_cutoff: Optional[float] = 0.05,
+    method: str | None = "weighted_ks",
+    p_cutoff: float | None = 0.05,
 ) -> tuple[list[str], list[str]]:
     """A wrapper function to identify on and off morphological features by applying different
     statistical methods to compare the target and reference datasets.

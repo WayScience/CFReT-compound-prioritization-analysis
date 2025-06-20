@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# coding: utf-8
 
 # ## Downloading Data
 # In this notebook, we will download the dataset required for our compound prioritization analysis. The dataset will be stored in the `../data` directory, which is located one level above the current notebook directory. This `../data` folder will contain all the necessary data and metadata needed for the analysis.

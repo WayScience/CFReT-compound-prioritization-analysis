@@ -1,2 +1,26 @@
+# Poetry configuration file for the single-cell compound prioritization project
+
+[tool.poetry]
+name = "single-cell-compound-prio"
+version = "0.1.0"
+description = "single-cell compound prioritization framekwork"
+authors = ["Erik Serrano <erikishere3@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.14"
+numpy = ">=2.2.5,<3.0.0"
+scipy = ">=1.15.3,<2.0.0"
+matplotlib = ">=3.10.3,<4.0.0"
+polars = ">=1.29.0,<2.0.0"
+statsmodels = ">=0.14.4,<0.15.0"
+scikit-learn = ">=1.6.1,<2.0.0"
+pycytominer = ">=1.2.3,<2.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.1"
+pre-commit = "^4.2.0"
+
+# ruff configuration
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
