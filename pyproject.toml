@@ -3,7 +3,7 @@
 [tool.poetry]
 name = "single-cell-compound-prio"
 version = "0.1.0"
-description = ""
+description = "single-cell compound prioritization framekwork"
 authors = ["Erik Serrano <erikishere3@gmail.com>"]
 readme = "README.md"
 
