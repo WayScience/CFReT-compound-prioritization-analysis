@@ -8,7 +8,6 @@ of morphology features. It returns two lists of features: significant (on-morpho
 - Off-morphology signatures: non-significant features not associated with the cellular state
 """
 
-
 import numpy as np
 import polars as pl
 from scipy.stats import ks_2samp, permutation_test
@@ -108,24 +107,29 @@ def welchs_ttest(
     correction_method: str | None = "fdr_bh",
     sig_threshold: float | None = 0.05,
 ) -> pl.DataFrame:
-    """
-    Perform Welch's t-test for each feature in the provided profiles and return a DataFrame with p-values.
+    """Perform Welch's t-test for each feature in the provided profiles and return a DataFrame with p-values.
 
-    Parameters:
-    - ref_profile: polars.DataFrame
+    Parameters
+    ----------
+    ref_profiles : polars.DataFrame
         Reference profile containing features to be tested.
-    - exp_profile: polars.DataFrame
+    exp_profiles : polars.DataFrame
         Experimental profile containing features to be tested.
-    - morph_feats: List[str]
+    morph_feats : list[str]
         List of feature names to perform the statistical test on.
-    - correction_method: Optional[str], default="fdr_bh"
-        Method for multiple testing correction (e.g., "fdr_bh", "bonferroni").
-    - sig_threshold: Optional[float], default=0.05
-        Significance threshold for corrected p-values.
+    correction_method : str, optional
+        Method for multiple testing correction (e.g., "fdr_bh", "bonferroni"). Default is "fdr_bh".
+    sig_threshold : float, optional
+        Significance threshold for corrected p-values. Default is 0.05.
 
-    Returns:
-    - polars.DataFrame
-        DataFrame containing features, raw p-values, corrected p-values, and significance labels.
+    Returns
+    -------
+    polars.DataFrame
+        DataFrame with the following columns:
+        - "features": Feature names.
+        - "pval": Raw p-values.
+        - "corrected_p_value": Corrected p-values after multiple testing correction.
+        - "is_significant": Boolean indicating if the feature is significant based on the threshold.
     """
     # Dictionary to store p-values for each feature
     pvals = {}
@@ -169,7 +173,7 @@ def welchs_ttest(
     )
 
 
-def permutation(
+def perm_test(
     ref_profiles: pl.DataFrame,
     exp_profiles: pl.DataFrame,
     morph_feats: list[str],
@@ -177,7 +181,7 @@ def permutation(
     correction_method: str | None = "fdr_bh",
     sig_threshold: float | None = 0.05,
     seed: int | None = 0,
-):
+) -> pl.DataFrame:
     # setting internal statistical functions (since it's a required input for permutation_test)
     def diff_of_means(ref_vals, exp_vals):
         return np.mean(exp_vals) - np.mean(ref_vals)
@@ -217,8 +221,8 @@ def permutation(
     # convert p-values dictionary to a polars dataframe
     pvals_df = pl.DataFrame(
         {
-            "features": pvals.keys(),
-            "p_value": pvals.values(),
+            "features": list(pvals.keys()),
+            "pval": list(pvals.values()),
         }
     )
 
@@ -230,7 +234,7 @@ def permutation(
             pl.Series(
                 "corrected_p_value",
                 p_val_correction(
-                    pvals_df["p_value"].to_numpy(), method=correction_method
+                    pvals_df["pval"].to_numpy(), method=correction_method
                 ),
             )
         )
@@ -244,7 +248,7 @@ def ks_test(
     ref_profiles: pl.DataFrame,
     exp_profiles: pl.DataFrame,
     morph_feats: list[str],
-    correction_method: str = "fdr_bh",
+    correction_method: str | None = "fdr_bh",
     sig_threshold: float | None = 0.05,
 ) -> pl.DataFrame:
     """Perform KS-test for each feature in the morphology profiles and identifies
@@ -257,9 +261,9 @@ def ks_test(
 
     Parameters
     ----------
-    ref_df : pl.DataFrame
+    ref_profiles : pl.DataFrame
         Reference DataFrame.
-    exp_df : pl.DataFrame
+    exp_profiles : pl.DataFrame
         Experimental DataFrame.
     morph_feats : list[str]
         List of morphology feature names.
@@ -304,7 +308,7 @@ def ks_test(
     pvals_df = pl.DataFrame(
         {
             "features": morph_feats,
-            "p_value": pvals.values(),
+            "pval": [pvals[morph_feat] for morph_feat in morph_feats],
         }
     )
 
@@ -317,7 +321,7 @@ def ks_test(
             pl.Series(
                 "corrected_p_value",
                 p_val_correction(
-                    pvals_df["p_value"].to_numpy(), method=correction_method
+                    pvals_df["pval"].to_numpy(), method=correction_method
                 ),
             )
         )
@@ -337,8 +341,7 @@ def get_signatures(
     permutation_resamples: int | None = 1000,
     seed: int | None = 0,
 ) -> tuple[list[str], list[str]]:
-    """
-    Identifies significant and non-significant features between two profiles.
+    """Identifies significant and non-significant features between two profiles.
 
     This function performs statistical tests to compare two profiles (reference and experimental)
     based on specified morphology features. It identifies significant features using the
@@ -348,9 +351,9 @@ def get_signatures(
 
     Parameters
     ----------
-    ref_profile : pl.DataFrame
+    ref_profiles : pl.DataFrame
         Reference profile as a Polars DataFrame.
-    exp_profile : pl.DataFrame
+    exp_profiles : pl.DataFrame
         Experimental profile as a Polars DataFrame.
     morph_feats : list[str]
         List of morphology feature names to compare.
@@ -362,7 +365,8 @@ def get_signatures(
         Method for p-value correction. Default is "fdr_bh".
     permutation_resamples : int, optional
         Number of resamples for permutation test. Default is 1000.
-
+    seed : int, optional
+        Random seed for reproducibility. Default is 0.
     Returns
     -------
     tuple
@@ -389,16 +393,16 @@ def get_signatures(
 
     # type check
     if not isinstance(ref_profiles, pl.DataFrame):
-        raise TypeError("ref_profile must be a DataFrame")
+        raise TypeError("ref_profiles must be a DataFrame")
     if not isinstance(exp_profiles, pl.DataFrame):
-        raise TypeError("exp_profile must be a DataFrame")
+        raise TypeError("exp_profiles must be a DataFrame")
     if not isinstance(morph_feats, list):
-        raise TypeError("feats must be a list")
+        raise TypeError("morph_feats must be a list")
     if not all(isinstance(feat, str) for feat in morph_feats):
-        raise TypeError("All elements in feats must be strings")
-    if not isinstance(p_threshold, (int, float)):
+        raise TypeError("All elements in morph_feats must be strings")
+    if p_threshold is not None and not isinstance(p_threshold, (int, float)):
         raise TypeError("p_threshold must be an int or float")
-    if not isinstance(fdr_method, str):
+    if fdr_method is not None and not isinstance(fdr_method, str):
         raise TypeError("fdr_method must be a string")
 
     # selecting statistical test to determine the significance of the morphology features
@@ -412,7 +416,7 @@ def get_signatures(
             sig_threshold=p_threshold,
         )
     elif method == "permutation_test":
-        pvals_df = permutation(
+        pvals_df = perm_test(
             ref_profiles=ref_profiles,
             exp_profiles=exp_profiles,
             morph_feats=morph_feats,
