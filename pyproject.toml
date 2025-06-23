@@ -16,6 +16,9 @@ polars = ">=1.29.0,<2.0.0"
 statsmodels = ">=0.14.4,<0.15.0"
 scikit-learn = ">=1.6.1,<2.0.0"
 pycytominer = ">=1.2.3,<2.0.0"
+jupyter = "^1.1.1"
+ipykernel = "^6.29.5"
+tqdm = "^4.67.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"

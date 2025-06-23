@@ -164,5 +164,5 @@ cython_debug/
 # prevent storing large datasets
 data/
 
-# remove prototype code
+# ignoring prototype files
 _*
