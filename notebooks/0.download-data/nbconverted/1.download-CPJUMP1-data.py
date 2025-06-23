@@ -63,7 +63,7 @@ exp_metadata.write_csv(exp_metadata_path)
 exp_metadata.head()
 
 
-# In[4]:
+# In[ ]:
 
 
 # setting CPJUMP1 source link, this points to the main directory where all the plate data
@@ -78,7 +78,12 @@ for plate in tqdm.tqdm(
     plate_data_source = f"{header_link}/{plate}/{plate}_normalized_negcon.csv.gz"
 
     # reading the plate data from the source URL
-    orf_plate_df = polars.read_csv(plate_data_source, separator=",", has_header=True)
+    # if the plate cannot be downloaded and read, it will skip to the next plate
+    try:
+        orf_plate_df = polars.read_csv(plate_data_source, separator=",", has_header=True)
+    except polars.errors.ReadError:
+        print(f"Failed to download and read plate data for {plate}. Skipping...")
+        continue
 
     # saving the plate data to a parquet file
     orf_plate_df.write_parquet(data_dir / f"{plate}_normalized_negcon.parquet")
