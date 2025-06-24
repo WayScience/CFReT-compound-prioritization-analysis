@@ -2,9 +2,9 @@
 
 ## About
 
-buSCar (**B**ioactive **U**nbiased **S**ingle-cell **C**ompound **A**ssessment and **R**anking) is a framework designed to leverage single-cell profiles to identify effective compounds in high-content drug screening. 
+buSCar (**B**ioactive **U**nbiased **S**ingle-cell **C**ompound **A**ssessment and **R**anking) is a framework designed to leverage single-cell profiles to identify effective compounds in high-content drug screening.
 The name "buSCar" is also a play on the verb "buscar," which means "to search" or "to seek" in both Spanish and Portuguese, reflecting the framework's goal of searching for and prioritizing effective compounds.
-Traditional high-content screening approaches typically use population-based (aggregated) profiles to evaluate the morphological activity induced by compounds, but these aggregated profiles can obscure the biological heterogeneity present when cells are exposed to different compounds. 
+Traditional high-content screening approaches typically use population-based (aggregated) profiles to evaluate the morphological activity induced by compounds, but these aggregated profiles can obscure the biological heterogeneity present when cells are exposed to different compounds.
 buSCar addresses this limitation by analyzing single-cell profiles, enabling a more nuanced assessment of compound activity.
 
 The framework emphasizes interpretability by identifying which morphological features are strongly associated with specific cell states, as well as those that remain unaffected.
@@ -27,7 +27,7 @@ buSCar has 5 main modules:
 | Hits          | Identifies compounds that perform well based on both on-morphology and off-morphological activity scores from the Activity module.                                                                                                                                                         |
 
 
-## How to install 
+## How to install
 
 ### 1. Clone the Repository
 
