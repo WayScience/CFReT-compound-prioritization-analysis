@@ -9,4 +9,5 @@ source activate buscar
 jupyter nbconvert --output-dir=nbconverted --to script *.ipynb
 
 # execute the script
-python nbconverted/0.download-data.py
+python nbconverted/1.download-CPJUMP1-data.py
+
