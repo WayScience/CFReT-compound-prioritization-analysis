@@ -3,7 +3,7 @@
 
 
 # activate the conda environment
-source activate sc-hit
+source activate buscar
 
 # convert the notebook to a script
 jupyter nbconvert --output-dir=nbconverted --to script *.ipynb
