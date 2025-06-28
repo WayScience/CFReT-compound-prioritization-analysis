@@ -3,10 +3,11 @@
 
 
 # activate the conda environment
-source activate sc-hit
+source activate buscar
 
 # convert the notebook to a script
 jupyter nbconvert --output-dir=nbconverted --to script *.ipynb
 
 # execute the script
-python nbconvert/0.download-data.py
+python nbconverted/1.download-CPJUMP1-data.py
+
