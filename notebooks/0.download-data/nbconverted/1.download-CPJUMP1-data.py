@@ -156,6 +156,7 @@ for delayed_time_point, batch_name in batch_and_time_delay_dict.items():
         profile_url = f"{header_link}/{profile_end_point}"
 
         # downloading profile data from the URL link
+        # if download fails, raise an error
         try:
             loaded_profile = polars.read_csv(
                 profile_url,
@@ -172,11 +173,11 @@ for delayed_time_point, batch_name in batch_and_time_delay_dict.items():
         loaded_profiles_df.append(loaded_profile)
 
     # concatenate all the loaded profiles into a single DataFrame and save
-    concatenated_profiles_df = polars.concat(loaded_profiles_df)
+    loaded_profiles_df = polars.concat(loaded_profiles_df, how="vertical")
 
     # save the concatenated profiles to a parquet file
     output_file = (profiles_dir / f"{batch_name}_profiles.parquet").resolve()
-    concatenated_profiles_df.write_parquet(output_file)
+    loaded_profiles_df.write_parquet(output_file)
 
 
 # Downloading the platemaps associated with the selected `pert_type`
